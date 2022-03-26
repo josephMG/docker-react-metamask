@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  react_metamask:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./app:/app
+    command: sh -c "yarn start"
+    ports:
+      - "3000:3000"
+    stdin_open: true
