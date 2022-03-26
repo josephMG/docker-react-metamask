@@ -8,7 +8,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={fox} className="App-logo" alt="metamask fox" />
-        <MetaMaskAuth onAddressChanged={(address) => alert(address)} />
+        <MetaMaskAuth onAddressChanged={(address) => {}} />
       </header>
     </div>
   );
