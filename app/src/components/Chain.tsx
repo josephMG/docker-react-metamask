@@ -1,5 +1,6 @@
-import type { Web3ReactHooks } from '@web3-react/core'
-import { CHAINS } from '../chains'
+import Box from '@mui/material/Box';
+import type { Web3ReactHooks } from '@web3-react/core';
+import { CHAINS } from '../chains';
 
 export function Chain({ chainId }: { chainId: ReturnType<Web3ReactHooks['useChainId']> }) {
   if (chainId === undefined) return null
@@ -8,18 +9,18 @@ export function Chain({ chainId }: { chainId: ReturnType<Web3ReactHooks['useChai
 
   if (name) {
     return (
-      <div>
+      <Box>
         Chain:{' '}
         <b>
           {name} ({chainId})
         </b>
-      </div>
+      </Box>
     )
   }
 
   return (
-    <div>
+    <Box>
       Chain Id: <b>{chainId}</b>
-    </div>
+    </Box>
   )
 }

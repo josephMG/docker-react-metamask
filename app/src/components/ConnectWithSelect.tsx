@@ -2,6 +2,11 @@ import type { Web3ReactHooks } from '@web3-react/core'
 import type { MetaMask } from '@web3-react/metamask'
 import { Network } from '@web3-react/network'
 import { useCallback, useState } from 'react'
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import MenuItem from '@mui/material/MenuItem';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import MUISelect from '@mui/material/Select';
 import { CHAINS, getAddChainParameters, URLS } from '../chains'
 
 function Select({
@@ -16,20 +21,25 @@ function Select({
   chainIds: number[]
 }) {
   return (
-    <select
+    <MUISelect
       value={chainId}
+      input={<OutlinedInput />}
       onChange={(event) => {
         switchChain?.(Number(event.target.value))
       }}
       disabled={switchChain === undefined}
     >
-      {displayDefault ? <option value={-1}>Default Chain</option> : null}
+      {displayDefault ?
+        <MenuItem disabled value={-1}>
+          <em>Default Chain</em>
+        </MenuItem> : null
+      }
       {chainIds.map((chainId) => (
-        <option key={chainId} value={chainId}>
+        <MenuItem key={chainId} value={chainId}>
           {CHAINS[chainId]?.name ?? chainId}
-        </option>
+        </MenuItem>
       ))}
-    </select>
+    </MUISelect>
   )
 }
 
@@ -71,7 +81,7 @@ export function ConnectWithSelect({
 
   if (error) {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <Select
           chainId={desiredChainId}
           switchChain={switchChain}
@@ -79,7 +89,9 @@ export function ConnectWithSelect({
           chainIds={chainIds}
         />
         <div style={{ marginBottom: '1rem' }} />
-        <button
+        <Button
+          variant="outlined"
+          color="error"
           onClick={() =>
             connector instanceof Network
               ? void connector.activate(desiredChainId === -1 ? undefined : desiredChainId)
@@ -87,12 +99,12 @@ export function ConnectWithSelect({
           }
         >
           Try Again?
-        </button>
-      </div>
+        </Button>
+      </Box>
     )
   } else if (isActive) {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <Select
           chainId={desiredChainId === -1 ? -1 : chainId}
           switchChain={switchChain}
@@ -100,12 +112,12 @@ export function ConnectWithSelect({
           chainIds={chainIds}
         />
         <div style={{ marginBottom: '1rem' }} />
-        <button onClick={() => void connector.deactivate()}>Disconnect</button>
-      </div>
+        <Button variant="outlined" color="secondary" onClick={() => void connector.deactivate()}>Disconnect</Button>
+      </Box>
     )
   } else {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <Select
           chainId={desiredChainId}
           switchChain={isActivating ? undefined : switchChain}
@@ -113,7 +125,9 @@ export function ConnectWithSelect({
           chainIds={chainIds}
         />
         <div style={{ marginBottom: '1rem' }} />
-        <button
+        <Button
+          variant="outlined"
+          color="primary"
           onClick={
             isActivating
               ? undefined
@@ -125,8 +139,8 @@ export function ConnectWithSelect({
           disabled={isActivating}
         >
           Connect
-        </button>
-      </div>
+        </Button>
+      </Box>
     )
   }
 }
